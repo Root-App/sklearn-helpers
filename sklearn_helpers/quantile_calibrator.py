@@ -4,6 +4,9 @@ import numpy as np
 from scipy.optimize import minimize
 
 
+__all__ = ['QuantileCalibrator']
+
+
 class QuantileCalibrator(BaseEstimator, TransformerMixin, RegressorMixin):
     """
     An estimator which will calibrate with respect to quantiles.

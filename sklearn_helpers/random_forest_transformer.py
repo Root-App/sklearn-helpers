@@ -2,6 +2,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.base import TransformerMixin
 
 
+__all__ = ['RandomForestTransformer']
+
+
 class RandomForestTransformer(RandomForestRegressor, TransformerMixin):
     """
     Wrapper to allow the use of RandomForestRegressors as a transformer.
