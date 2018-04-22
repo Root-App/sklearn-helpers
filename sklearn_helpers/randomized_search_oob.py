@@ -41,13 +41,13 @@ class RandomizedSearchOOB(RandomizedSearchCV):
                  error_score='raise'):
 
         if not hasattr(estimator, 'oob_score'):
-            raise ValueError("RandomizedSearchOOB requires the ability to use out-of-bag predictions."
-                             "You passed the estimator {}, which does not have the attribute 'oob_score.".
+            raise ValueError("RandomizedSearchOOB requires the ability to use out-of-bag predictions. "
+                             "You passed the estimator {}, which does not have the attribute 'oob_score. ".
                              format(estimator))
 
         if not estimator.oob_score:
-            raise ValueError("RandomizedSearchOOB requires the ability to use out-of-bag predictions."
-                             "You passed the estimator {}, which 'oob_score == False.".format(estimator) +
+            raise ValueError("RandomizedSearchOOB requires the ability to use out-of-bag predictions. "
+                             "You passed the estimator {}, which 'oob_score == False. ".format(estimator) +
                              "Set oob_score = True.")
 
         cv = _OneFold()
