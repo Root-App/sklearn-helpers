@@ -9,6 +9,7 @@ This `README` is a WIP.
 You can install this package by running these commands:
 
 ```bash
+# For HTTP
 git clone https://github.com/Root-App/sklearn-helpers
 cd sklearn-helpers
 pip install .
@@ -17,10 +18,27 @@ pip install .
 OR
 
 ```bash
+# For ssh
+git clone git@github.com:Root-App/sklearn-helpers.git
+cd sklearn-helpers
+pip install .
+```
+
+OR
+
+```bash
+# For HTTP
 pip install git+https://github.com/Root-App/sklearn-helpers
 ```
 
-(I haven't tried this one yet, so use it at your own risk.)
+OR
+
+```bash
+# For ssh
+pip install git+git@github.com:Root-App/sklearn-helpers.git
+```
+
+(I haven't tried these one-liners yet, so use it at your own risk.)
 
 ### Class Descriptions
 
@@ -34,6 +52,7 @@ random forest.
 * `RandomizedSearchOOB` is a modified `RandomSearchCV` which
 uses out-of-bag predictions to calculate r<sup>2</sup> instead of
 a hold out set.
+* `SparseColumnRemover` removes columns with too many zeros.
 
 
 **TODO:** Write more.
