@@ -52,7 +52,7 @@ random forest.
 * `RandomizedSearchOOB` is a modified `RandomSearchCV` which
 uses out-of-bag predictions to calculate r<sup>2</sup> instead of
 a hold out set.
-* `SparceColumnRemover` removes columns with too many zeros.
+* `SparseColumnRemover` removes columns with too many zeros.
 
 
 **TODO:** Write more.
