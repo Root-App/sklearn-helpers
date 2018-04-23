@@ -47,23 +47,23 @@ class RandomizedSearchOOB(RandomizedSearchCV):
 
         if not estimator.oob_score:
             raise ValueError("RandomizedSearchOOB requires the ability to use out-of-bag predictions. "
-                             "You passed the estimator {}, which 'oob_score == False. ".format(estimator) +
+                             "You passed the estimator {}, with 'oob_score == False. ".format(estimator) +
                              "Set oob_score = True.")
 
         cv = _OneFold()
         return_train_score = False
 
-        super().__init__(estimator,
-                         param_distributions,
-                         n_iter,
-                         scoring,
-                         fit_params,
-                         n_jobs,
-                         iid,
-                         refit,
-                         cv,
-                         verbose,
-                         pre_dispatch,
-                         random_state,
-                         error_score,
-                         return_train_score)
+        super().__init__(estimator=estimator,
+                         param_distributions=param_distributions,
+                         n_iter=n_iter,
+                         scoring=scoring,
+                         fit_params=fit_params,
+                         n_jobs=n_jobs,
+                         iid=iid,
+                         refit=refit,
+                         cv=cv,
+                         verbose=verbose,
+                         pre_dispatch=pre_dispatch,
+                         random_state=random_state,
+                         error_score=error_score,
+                         return_train_score=return_train_score)
