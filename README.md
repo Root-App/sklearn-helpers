@@ -42,7 +42,7 @@ pip install git+git@github.com:Root-App/sklearn-helpers.git
 
 ### Class Descriptions
 
-* `QuantileCalibrator` inherets from `RegressorMixIn` and 
+* `QuantileCalibrator` inherits from `RegressorMixIn` and 
 `TransformerMixIn`. It will allow you to calibrate the output of
 a regression model to training target quantiles. You can choose to
 use smoothed isotonic regression, or not.
@@ -52,6 +52,7 @@ random forest.
 * `RandomizedSearchOOB` is a modified `RandomSearchCV` which
 uses out-of-bag predictions to calculate r<sup>2</sup> instead of
 a hold out set.
+* `GridSearchOOB` same as above, but for `GridSearchCV`.
 * `SparseColumnRemover` removes columns with too many zeros.
 
 

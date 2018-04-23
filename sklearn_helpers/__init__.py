@@ -1,12 +1,13 @@
 from .quantile_calibrator import QuantileCalibrator
 from .random_forest_transformer import RandomForestTransformer
-from .randomized_search_oob import RandomizedSearchOOB
+from .search_oob import GridSearchOOB, RandomizedSearchOOB
 from .sparse_column_remover import SparseColumnRemover
 
 
 __all__ = [
     'QuantileCalibrator',
     'RandomForestTransformer',
+    'GridSearchOOB',
     'RandomizedSearchOOB',
     'SparseColumnRemover'
 ]
