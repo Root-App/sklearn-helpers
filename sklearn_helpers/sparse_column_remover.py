@@ -1,10 +1,10 @@
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 
 
 __all__ = ['SparseColumnRemover']
 
 
-class SparseColumnRemover(TransformerMixin):
+class SparseColumnRemover(BaseEstimator, TransformerMixin):
     """
     A transformer which removes columns of a dataframe which are made up of too many zeros.
     """
