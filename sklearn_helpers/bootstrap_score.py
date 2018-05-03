@@ -1,4 +1,5 @@
-from numpy import np
+import numpy as np
+import pandas as pd
 from sklearn.utils.validation import _num_samples
 
 
@@ -19,3 +20,16 @@ def bootstrap_score(y_true, y_pred, score_fun, n_samples):
 
     return np.array([score_fun(y_true[indices], y_pred[indices]) for indices in next_indices()])
 
+
+class BootstrapScore:
+
+    def __init__(self, score_fun, n_samples=100):
+        self.score_fun = score_fun
+        self.n_samples = n_samples
+
+    def scores(self, y_true, y_pred):
+
+        self.scores_ = bootstrap_score(y_true, y_pred, self.score_fun, self.n_samples)
+        self.description_ = pd.Series(self.scores_).describe(percentiles=np.arange(0.5, 1.0, 0.05))
+
+        return self.scores_
