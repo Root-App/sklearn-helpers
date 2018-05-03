@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.utils.validation import _num_samples
+from sklearn.metrics import r2_score
 
 
 def bootstrap_score(y_true, y_pred, score_fun, n_samples):
@@ -21,9 +22,9 @@ def bootstrap_score(y_true, y_pred, score_fun, n_samples):
     return np.array([score_fun(y_true[indices], y_pred[indices]) for indices in next_indices()])
 
 
-class BootstrapScore:
+class BootstrapScorer:
 
-    def __init__(self, score_fun, n_samples=100):
+    def __init__(self, score_fun=r2_score, n_samples=100):
         self.score_fun = score_fun
         self.n_samples = n_samples
 
