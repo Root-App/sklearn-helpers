@@ -16,12 +16,12 @@ def bootstrap_scores(y_true, y_pred, score_fun, n_samples):
     :return: An array of bootstrapped scores.
     """
 
-    def next_indices():
+    def indices_generator():
         n = _num_samples(y_true)
         for i in range(n_samples):
             yield np.random.choice(n, n, replace=True)
 
-    return np.array([score_fun(y_true[indices], y_pred[indices]) for indices in next_indices()])
+    return np.array([score_fun(y_true[indices], y_pred[indices]) for indices in indices_generator()])
 
 
 class BootstrapScorer:
