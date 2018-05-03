@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='sklearn_helpers',
-      version='0.0.5',
+      version='0.0.6',
       description='Some Helpers for sklearn.',
       url='https://github.com/Root-App/sklearn-helpers',
       author='David E. Weirich',
