@@ -3,6 +3,7 @@ from .random_forest_transformer import RandomForestTransformer
 from .search_oob import GridSearchOOB, RandomizedSearchOOB
 from .sparse_column_remover import SparseColumnRemover
 from .bootstrap_score import bootstrap_scores, BootstrapScorer
+from .categorical_cross_terms import categorical_cross_term_transform, CategoricalCrossTermTransformer
 
 
 __all__ = [
@@ -12,5 +13,7 @@ __all__ = [
     'RandomizedSearchOOB',
     'SparseColumnRemover',
     'bootstrap_scores',
-    'BootstrapScorer'
+    'BootstrapScorer',
+    'categorical_cross_term_transform',
+    'CategoricalCrossTermTransformer'
 ]
