@@ -20,7 +20,7 @@ class CategoricalCrossTermTransformer(BaseEstimator, TransformerMixin):
     VALID_BEHAVIORS = ['append', 'replace', 'series']
 
     def __init__(self,
-                 columns,
+                 columns=None,
                  new_column_name=None,
                  column_name_joiner='_',
                  feature_name_joiner='_',
@@ -28,6 +28,7 @@ class CategoricalCrossTermTransformer(BaseEstimator, TransformerMixin):
         """
         Take several categorical variables and create a new one by combining them.
         :param columns: Names of the columns which contain the categorical variables.
+               If 'None' then all columns are used. Default: None.
         :param new_column_name: New column name. If None, instead the name will be
                a combination of the values passed in columns. Default: None.
         :param column_name_joiner: string used to form the new column name. Default: '_'.
@@ -78,14 +79,18 @@ class CategoricalCrossTermTransformer(BaseEstimator, TransformerMixin):
         return result
 
 
-def categorical_cross_term_transform(X, columns, feature_name_joiner='_'):
+def categorical_cross_term_transform(X, columns=None, feature_name_joiner='_'):
     """
     Create categorical cross term array.
     :param X: Input data
-    :param columns: names of the columns which are to be combined.
+    :param columns: names of the columns which are to be combined. If None,
+           all columns are used. Default: None.
     :param feature_name_joiner: string used to combine feature names. Default: '_'.
     :return: Numpy.array which contains the cross terms.
     """
+
+    if columns is None:
+        columns = X.columns
 
     zip_obj = zip(*[X[name].astype(str) for name in columns])
 
