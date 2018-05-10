@@ -56,6 +56,10 @@ class CategoricalCrossTermTransformer(BaseEstimator, TransformerMixin):
 
         self.feature_name_joiner = feature_name_joiner
 
+    # For compatibility with Pipelines
+    def fit(self, X=None, y=None):
+        pass
+
     def transform(self, X, y=None):
         """
         Apply the transform.
