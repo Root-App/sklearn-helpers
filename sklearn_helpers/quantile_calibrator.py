@@ -13,17 +13,19 @@ class QuantileCalibrator(BaseEstimator, TransformerMixin, RegressorMixin):
     An estimator which will calibrate with respect to quantiles.
     """
 
-    def __init__(self, quantiles=10, isotonic_fit=True, isotonic_lambda=1, method='quantile'):
+    def __init__(self, quantiles=10, isotonic_fit=True, do_smoothing=True, isotonic_lambda=1, method='quantile'):
         """
         Create a quantile transformer class.
         :param quantile: And integer. The number of bins (quantiles).
         :param isotonic_fit: If true, regularize with an isotonic fit.
+        :param do_smoothing: If true, do lambda smoothing, default True
         :param isotonic_lambda: Lambda parameter for 3rd derivative regularization.
         :param method: Set to "equal" to split into equal sized bins instead of quantiles.
         """
 
         self.quantiles = quantiles
         self.isotonic_fit = isotonic_fit
+        self.do_smoothing = do_smoothing
         self.isotonic_lambda = isotonic_lambda
         self.method=method
 
@@ -52,11 +54,14 @@ class QuantileCalibrator(BaseEstimator, TransformerMixin, RegressorMixin):
         # This implementation is O(n) complexity, so the cost is minimal.
         x0 = isotonic_regression(X)
 
-        return minimize(self._ls_min_func,
-                        x0=x0,
-                        args=(X, self.isotonic_lambda),
-                        method='COBYLA',
-                        constraints=cons).x
+        if self.do_smoothing:
+            return minimize(self._ls_min_func,
+                            x0=x0,
+                            args=(X, self.isotonic_lambda),
+                            method='COBYLA',
+                            constraints=cons).x
+        else:
+            return x0
 
     def _make_lookup_table(self, X, y):
 
