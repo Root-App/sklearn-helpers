@@ -7,13 +7,14 @@ from sklearn.metrics import r2_score
 __all__ = ['bootstrap_scores', 'BootstrapScorer']
 
 
-def bootstrap_scores(y_true, y_pred, score_fun, n_samples):
+def bootstrap_scores(y_true, y_pred, score_fun, n_samples, sample_weight=None):
     """
     Create Bootstrapped scores
     :param y_true: Array-like of ground truth y-values.
     :param y_pred: Array-like of predicted y-values - the same length as y_true
-    :param score_fun: A function which accepts y_true and y_pred and returns a real number.
+    :param score_fun: A function which accepts y_true, y_pred, an optional sample_weights, and returns a real number.
     :param n_samples: The number of times the score function is called.
+    :param sample_weight: Optional argument. Array-like the same length as y_true. Default None
     :return: An array of bootstrapped scores.
     """
 
@@ -28,7 +29,9 @@ def bootstrap_scores(y_true, y_pred, score_fun, n_samples):
     if hasattr(y_pred, 'values'):
         y_pred = y_pred.values
 
-    return np.array([score_fun(y_true[indices], y_pred[indices]) for indices in indices_generator()])
+    return np.array([
+        score_fun(y_true[indices], y_pred[indices], sample_weight=sample_weight) for indices in indices_generator()
+    ])
 
 
 class BootstrapScorer:
@@ -42,9 +45,9 @@ class BootstrapScorer:
         self.score_fun = score_fun
         self.n_samples = n_samples
 
-    def scores(self, y_true, y_pred):
+    def scores(self, y_true, y_pred, sample_weight=None):
 
-        self.scores_ = bootstrap_scores(y_true, y_pred, self.score_fun, self.n_samples)
+        self.scores_ = bootstrap_scores(y_true, y_pred, self.score_fun, self.n_samples, sample_weight)
         self.description_ = pd.Series(self.scores_).describe(percentiles=np.arange(0.5, 1.0, 0.05))
 
         return self.scores_
