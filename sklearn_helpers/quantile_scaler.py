@@ -8,17 +8,38 @@ __all__ = [
     'QuantileScaler'
 ]
 
+
+def round_to_n(x, n=8):
+    """
+    Round a number to n significant digits.
+
+    e.g.
+
+    round_to_n(12345, 2) -> 12000
+    round_to_n(-.00897, 1) -> -.009
+
+    :param x: Number to round
+    :param n: number of significant digits
+    :return: The rounded number
+    """
+    n = 1 + n - int(np.floor(np.log10(abs(x) + .1)))
+
+    return round(x, n)
+
+
 def create_quantile_lookup_table(x, n_quantiles=100):
-    q = pd.Series(x).quantile(q=np.linspace(0, 1, n_quantiles + 1)).drop_duplicates().index.values
+    x = x.apply(round_to_n)
 
-    quantile_cut = pd.qcut(x, q=q)
+    q = pd.Series(x).quantile(q=np.linspace(0, 1, n_quantiles + 1))
 
-    ordered_quantiles = pd.Series(quantile_cut.unique()).sort_values().reset_index(drop=True).values.astype('object')
+    q = q.drop_duplicates()
 
-    ordered_quantiles[0] = pd.Interval(left=-np.inf, right=ordered_quantiles[0].right, closed='right')
-    ordered_quantiles[-1] = pd.Interval(left=ordered_quantiles[-1].left, right=np.inf, closed='right')
+    q[0] = -np.inf
+    q[-1] = np.inf
 
-    return pd.Series(data=q[:-1], index=pd.CategoricalIndex(ordered_quantiles, ordered=True))
+    intervals = [pd.Interval(left=a, right=b, closed='right') for a, b in zip(q.iloc[:-1], q.iloc[1:])]
+
+    return pd.Series(data=q.index[:-1], index=pd.IntervalIndex(intervals))
 
 
 class QuantileScaler(BaseEstimator, TransformerMixin):
