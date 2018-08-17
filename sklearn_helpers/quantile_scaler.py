@@ -22,9 +22,9 @@ def round_to_n(x, n=8):
     :param n: number of significant digits
     :return: The rounded number
     """
-    n = 1 + n - int(np.floor(np.log10(abs(x) + .1)))
+    m = n - 1 - int(np.floor(np.log10(abs(x) + .01)))
 
-    return round(x, n)
+    return round(x, m)
 
 
 def create_quantile_lookup_table(x, n_quantiles=100):
