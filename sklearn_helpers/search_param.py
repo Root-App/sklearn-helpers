@@ -74,7 +74,7 @@ def _find_move_direction(fun,keys:list,params:dict,upper_point:dict,lower_point:
                 param[key]=params[key][upper_point[key]]
             else:
                 param[key] = params[key][lower_point[key]]
-        score=fun(**param)
+        score=fun(param)
         if score<best_score:
             move_up=move
             best_score=score

@@ -4,8 +4,13 @@ import math
 import numpy as np
 import pandas as pd
 
-def f(x,y):
-    return x**2+y**2
+def f(param):
+
+    result=0
+
+    for value in list(param.values()):
+        result+=value**2
+    return result
 
 
 
