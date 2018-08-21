@@ -7,7 +7,7 @@ import random
 import numpy as np
 
 
-def fl_search(fun:function,params:dict,n_iter:int)->dict:
+def fl_search(fun,params:dict,n_iter:int)->dict:
     """
     This function is to actively search best parameters for one model, should be better than grid search.
     parameter space should be discrete and monotonic.
@@ -15,11 +15,6 @@ def fl_search(fun:function,params:dict,n_iter:int)->dict:
     :return: A tuple with first one is the dictionary for the best parameters, and second one is a list as the best score tracking
     """
 
-    params = {'max_depth': [4, 5, 6, 7, 8, 9],
-              'learning_rate': [0.03, 0.05, 0.1, 0.13, 0.15],
-              'reg_lambda': [0.8, 1, 1.3, 1.5],
-              'n_estimators': [80, 100, 150, 200]
-              }
 
     keys=list(params.keys())
 
@@ -40,22 +35,22 @@ def fl_search(fun:function,params:dict,n_iter:int)->dict:
 
         # Track the score for the optimization
         tracking.append(score)
+        param={}
+        for key in keys:
+            if move_up[key]:
+                param[key] = params[key][upper_point[key]]
+            else:
+                param[key] = params[key][lower_point[key]]
 
         # Reset the lower_point and upper_point based move direction
         lower_point, upper_point = _reset_upper_lower_points(keys=keys, move_up=move_up,num_points=num_points,
                                                              upper_point=upper_point,lower_point=lower_point)
         i+=1
 
-    param = {}
-    for key in keys:
-        if move[key]:
-            param[key] = params[key][upper_point[key]]
-        else:
-            param[key] = params[key][lower_point[key]]
 
     return (param,tracking)
 
-def _find_move_direction(fun:function,keys:list,params:dict,upper_point:dict,lower_point:dict,move_up:dict)->tuple:
+def _find_move_direction(fun,keys:list,params:dict,upper_point:dict,lower_point:dict,move_up:dict)->tuple:
     """
     This function is to calculate the best combination of upper_point and lower_point. The best one decide the moving
     direction for each parameter. The best score should be also stored.
