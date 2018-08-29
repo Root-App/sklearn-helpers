@@ -18,24 +18,27 @@ def fl_search(fun,params:dict,n_iter:int)->dict:
 
     keys=list(params.keys())
 
-    num_points={}
-    for key in keys:
-        num_points[key]=len(params[key])
-        params[key].sort()
+    num_points={key: len(value) for key, value in params.items()}
+
+    if not all(value == sorted(value) for key, value in params.items()):
+        raise Exception(" Some parameters are not in ascending order")
 
     lower_point, upper_point=_init_upper_lower_points(keys=keys,num_points=num_points)
     move_up={}
     tracking=[]
 
-    i=0
-    while i<n_iter:
+
+    for _ in range(n_iter):
         # find the move direction for next round
         score,move_up= _find_move_direction(fun=fun,keys=keys,params=params,upper_point=upper_point,
                                           lower_point=lower_point,move_up=move_up)
 
         # Track the score for the optimization
-        tracking.append(score)
-        param={}
+        if len(tracking) >= 1 and score == tracking[-1]:
+            break
+        else:
+            tracking.append(score)
+        param = {}
         for key in keys:
             if move_up[key]:
                 param[key] = params[key][upper_point[key]]
@@ -45,10 +48,10 @@ def fl_search(fun,params:dict,n_iter:int)->dict:
         # Reset the lower_point and upper_point based move direction
         lower_point, upper_point = _reset_upper_lower_points(keys=keys, move_up=move_up,num_points=num_points,
                                                              upper_point=upper_point,lower_point=lower_point)
-        i+=1
 
 
-    return (param,tracking)
+
+    return (param, tracking)
 
 def _find_move_direction(fun,keys:list,params:dict,upper_point:dict,lower_point:dict,move_up:dict)->tuple:
     """
@@ -62,22 +65,20 @@ def _find_move_direction(fun,keys:list,params:dict,upper_point:dict,lower_point:
     :param move_up: A dictionary with keyse from params, values are logic ones describing move up or down.
     :return: A tuple, with the first one is best score, and the second one is the moving direction move_up
     """
-    best_score=np.Inf
-    move_space={}
-    for key in keys:
-        move_space[key]=[False,True]
+    best_score = np.Inf
+    move_space = {key: [False, True] for key in params.keys()}
 
     for move in grid(move_space):
-        param={}
+        param = {}
         for key in keys:
             if move[key]:
-                param[key]=params[key][upper_point[key]]
+                param[key] = params[key][upper_point[key]]
             else:
                 param[key] = params[key][lower_point[key]]
-        score=fun(param)
-        if score<best_score:
-            move_up=move
-            best_score=score
+        score = fun(param)
+        if score < best_score:
+            move_up = move
+            best_score = score
     return (best_score,move_up)
 
 def _init_upper_lower_points(keys:list,num_points:dict)->tuple:
