@@ -7,11 +7,15 @@ import random
 import numpy as np
 
 
-def fl_search(fun,params:dict,n_iter:int)->dict:
+def fl_search(fun, params: dict, n_iter: int=10)->dict:
     """
     This function is to actively search best parameters for one model, should be better than grid search.
     parameter space should be discrete and monotonic.
+    :param fun: the self defined function, input of fun should be a dictionary, return is one numeric
+                value, and the lower the better.
     :param params: The parameters space to search, with keys as parameters and values are list of candidate values
+    :param n_iter: this is the total number of iteration, default is 10, the function will early stop if the
+                   local minimum is found
     :return: A tuple with first one is the dictionary for the best parameters, and second one is a list as the best score tracking
     """
 
@@ -46,8 +50,10 @@ def fl_search(fun,params:dict,n_iter:int)->dict:
                 param[key] = params[key][lower_point[key]]
 
         # Reset the lower_point and upper_point based move direction
-        lower_point, upper_point = _reset_upper_lower_points(keys=keys, move_up=move_up,num_points=num_points,
-                                                             upper_point=upper_point,lower_point=lower_point)
+        lower_point, upper_point = _reset_upper_lower_points(keys=keys, move_up=move_up,
+                                                             num_points=num_points,
+                                                             upper_point=upper_point,
+                                                             lower_point=lower_point)
 
 
 
